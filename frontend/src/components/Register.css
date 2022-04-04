@@ -1,0 +1,21 @@
+.hidden {
+    position: absolute;
+    left: -9999px;
+}
+
+.focused {
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    background: #000;
+    color: #fff;
+    padding: 0.25rem;
+    position: relative;
+    bottom: -10px;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 0.75rem;
+    position: relative;
+    bottom: -10px;
+}
