@@ -168,7 +168,7 @@ function TodosList() {
 
     const logout = async () => {
         try {
-            await axios.get(`${baseUrl}/user/logout`, {
+            await axios.get(`${baseUrl}/user/logout/${auth.userId}`, {
                 withCredentials: true,
             });
             setAuth({});
@@ -194,7 +194,7 @@ function TodosList() {
                     {todos.map((todo) => (
                         <li
                             className="mb-3 d-flex justify-content-end"
-                            key={todo.id}
+                            key={todo._id}
                         >
                             <span className="flex-grow-1">
                                 <span
@@ -207,7 +207,7 @@ function TodosList() {
                             </span>
                             {!todo.completed ? (
                                 <button
-                                    onClick={() => updateTodo(todo.id)}
+                                    onClick={() => updateTodo(todo._id)}
                                     className="btn btn-sm"
                                     style={{
                                         color: 'green',
@@ -217,7 +217,7 @@ function TodosList() {
                                 </button>
                             ) : (
                                 <button
-                                    onClick={() => removeTodo(todo.id)}
+                                    onClick={() => removeTodo(todo._id)}
                                     className="btn  btn-sm"
                                 >
                                     <FontAwesomeIcon

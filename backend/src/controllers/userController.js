@@ -1,18 +1,23 @@
 const { Users } = require('../model/data');
+const { User } = require('../database/models');
 
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 
 const userController = {
-    register: (req, res) => {
+    register: async (req, res) => {
         const { username, password } = req.body;
         if (!username || !password)
             return res
                 .status(400)
                 .json({ message: 'Es necesario un usuario y contraseña' });
 
-        const user = Users.find((user) => user.username === username);
+        const user = await User.findOne({
+            where: { username },
+            raw: true,
+            nest: true,
+        });
         if (user) {
             res.status(409).json({
                 message: 'El usuario ya existe',
@@ -25,8 +30,6 @@ const userController = {
                 username,
                 password: hashPassword,
             };
-            Users.push(newUser);
-
             const accessToken = jwt.sign(
                 { userId: newUser.id },
                 process.env.ACCESS_TOKEN_SECRET,
@@ -42,6 +45,10 @@ const userController = {
                 }
             );
 
+            newUser.refreshToken = refreshToken;
+
+            await User.create(newUser);
+
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 SameSite: 'None',
@@ -55,14 +62,18 @@ const userController = {
             });
         }
     },
-    login: (req, res) => {
+    login: async (req, res) => {
         const { username, password } = req.body;
         if (!username || !password)
             return res
                 .status(400)
                 .json({ message: 'Es necesario un usuario y contraseña' });
 
-        const user = Users.find((user) => user.username === username);
+        const user = await User.findOne({
+            where: { username },
+            raw: true,
+            nest: true,
+        });
         if (!user) {
             res.status(400).json({
                 message: 'El usuario no existe',
@@ -88,6 +99,7 @@ const userController = {
                         expiresIn: '7d',
                     }
                 );
+                User.update({ refreshToken }, { where: { id: user.id } });
                 res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
                     SameSite: 'None',
@@ -103,8 +115,13 @@ const userController = {
         }
     },
 
-    logout: (req, res) => {
+    logout: async (req, res) => {
         res.clearCookie('refreshToken');
+        await User.update(
+            { refreshToken: null },
+            { where: { id: req.params.id } }
+        );
+
         res.status(200).json({
             message: 'Usuario deslogueado',
         });

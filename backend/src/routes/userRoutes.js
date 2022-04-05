@@ -7,7 +7,7 @@ router.post('/register', userController.register);
 // Login
 router.post('/login', userController.login);
 // Logout
-router.get('/logout', userController.logout);
+router.get('/logout/:id', userController.logout);
 // Refresh token
 router.get('/refreshToken', userController.refreshToken);
 

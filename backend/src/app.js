@@ -5,8 +5,13 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const credentials = require('./middleware/credentials');
 const JWT = require('./middleware/JWT');
+const mongoose = require('mongoose');
 
 require('dotenv').config();
+
+const connectDB = require('./databasemdb/config');
+
+connectDB();
 
 app.use(credentials);
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
