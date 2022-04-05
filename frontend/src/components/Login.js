@@ -67,6 +67,7 @@ const Login = () => {
                         <input
                             type="text"
                             id="username"
+                            data-testid="username"
                             className="form-control"
                             placeholder="Usuario"
                             ref={userRef}
@@ -79,6 +80,7 @@ const Login = () => {
                         <input
                             type="password"
                             id="password"
+                            data-testid="password"
                             className="form-control"
                             placeholder="Contraseña"
                             ref={passwordRef}
@@ -92,9 +94,10 @@ const Login = () => {
                     <div className="d-flex justify-content-end mb-3">
                         <button
                             className="btn btn-secondary "
+                            data-testid="button"
                             disabled={!user || !password}
                         >
-                            Ingresar
+                            Iniciar sesión
                         </button>
                     </div>
                     <p>

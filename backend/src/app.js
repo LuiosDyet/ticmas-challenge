@@ -7,7 +7,6 @@ const credentials = require('./middleware/credentials');
 const JWT = require('./middleware/JWT');
 
 require('dotenv').config();
-const PORT = process.env.PORT || 3001;
 
 app.use(credentials);
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
@@ -23,6 +22,4 @@ app.use('/user', require('./routes/userRoutes'));
 // Create, Update, Delete, Read TODOS
 app.use('/todos', JWT, require('./routes/todosRoutes'));
 
-app.listen(PORT, () => {
-    console.log(`Servidor en puerto ${PORT}`);
-});
+module.exports = app;

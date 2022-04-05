@@ -104,6 +104,7 @@ const Register = () => {
                         <input
                             type="text"
                             id="username"
+                            data-testid="username"
                             className="form-control"
                             placeholder="Usuario"
                             ref={userRef}
@@ -117,6 +118,7 @@ const Register = () => {
                         <label htmlFor="username">nombre de usuario</label>
                         <p
                             id="usernameHints"
+                            data-testid="usernameHints"
                             className={
                                 userFocused || !validUser ? 'focused' : 'hidden'
                             }
@@ -129,6 +131,7 @@ const Register = () => {
                         <input
                             type="password"
                             id="password"
+                            data-testid="password"
                             className="form-control"
                             placeholder="contraseña"
                             ref={passwordRef}
@@ -144,6 +147,7 @@ const Register = () => {
                         <label htmlFor="password">contraseña</label>
                         <p
                             id="passwordHints"
+                            data-testid="passwordHints"
                             className={
                                 passwordFocused || !validPassword
                                     ? 'focused'
@@ -158,6 +162,7 @@ const Register = () => {
                         <input
                             type="password"
                             id="confirmPassword"
+                            data-testid="confirmPassword"
                             className="form-control"
                             placeholder="confirmar contraseña"
                             ref={confirmPasswordRef}
@@ -179,6 +184,7 @@ const Register = () => {
                         </label>
                         <p
                             id="confirmPasswordHints"
+                            data-testid="confirmPasswordHints"
                             className={
                                 confirmPasswordFocused || !validConfirmPassword
                                     ? 'focused'
@@ -191,6 +197,7 @@ const Register = () => {
                     <div className="d-flex justify-content-end mb-3">
                         <button
                             className="btn btn-secondary "
+                            data-testid="button"
                             disabled={
                                 !validUser ||
                                 !validPassword ||

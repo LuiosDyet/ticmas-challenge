@@ -23,7 +23,7 @@ function TodosList() {
     });
 
     useEffect(() => {
-        readTodos();
+        readTodos(); // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ function TodosList() {
                     break;
             }
             setRefresh({ done: false, method: '', todoId: '' });
-        }
+        } // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refresh]);
 
     const refreshToken = async () => {
@@ -190,7 +190,7 @@ function TodosList() {
                     </button>
                 </div>
                 <h2 className="fs-3 mb-3">Lista de tareas de {userName}</h2>
-                <ul>
+                <ul data-testid="todoList">
                     {todos.map((todo) => (
                         <li
                             className="mb-3 d-flex justify-content-end"
@@ -232,6 +232,7 @@ function TodosList() {
                 <input
                     type="text"
                     className="form-control mb-3"
+                    data-testid="todoInput"
                     placeholder="Agregar tarea"
                     ref={todoRef}
                     value={todo}

@@ -129,7 +129,6 @@ const userController = {
                         expiresIn: '15s',
                     }
                 );
-                console.log('user', user);
                 res.status(200).json({
                     message: 'Token renovado',
                     accessToken,

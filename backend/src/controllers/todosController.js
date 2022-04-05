@@ -16,7 +16,6 @@ const todosController = {
             completed: false,
         };
         Todos.push(todo);
-        console.log('Todos', Todos);
         res.status(201).json({
             message: `Todo ${todo.description.slice(0, 20)}... creado`,
             todo,
@@ -34,16 +33,15 @@ const todosController = {
 
         const todo = Todos.find((todo) => todo.id === id);
         todo.completed = !todo.completed;
-        console.log('Todos', Todos);
         res.status(200).json({
             message: `Todo ${todo.description.slice(0, 20)}... actualizado`,
+            todo,
         });
     },
     delete: (req, res) => {
         const { id } = req.params;
         const todo = Todos.find((todo) => todo.id === id);
         Todos.splice(Todos.indexOf(todo), 1);
-        console.log('Todos', Todos);
         res.status(200).json({
             message: `Todo ${todo.description.slice(0, 20)}... eliminado`,
         });
