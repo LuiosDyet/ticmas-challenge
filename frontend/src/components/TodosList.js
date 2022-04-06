@@ -7,7 +7,7 @@ import AuthContext from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
 function TodosList() {
-    const baseUrl = 'http://localhost:3001';
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     const { auth, setAuth, userName } = useContext(AuthContext);
     const navigate = useNavigate();

@@ -1,8 +1,8 @@
-FROM node:12-alpine
+FROM node:16 as build-stage
 
-RUN mkdir -p /usr/app
+WORKDIR /backend
 
-COPY package*.json ./
+COPY package.json .
 
 RUN npm install
 

@@ -1,4 +1,4 @@
 const { defaults } = require('jest-config');
 module.exports = {
-    testURL: 'http://localhost:3000',
+    testURL: 'http://localhost:8080',
 };
