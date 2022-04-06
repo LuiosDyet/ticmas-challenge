@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile.dev
+        ports:
+            - 3000:3000
+        container_name: todo-list-frontend
+        volumes:
+            - ./frontend/src:/usr/app/src
+            - ./frontend/public:/usr/app/public
+        depends_on:
+            - backend
+        stdin_open: true
+        tty: true
+
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile.dev
+        ports:
+            - 3001:3001
+        container_name: todo-list-backend
+        volumes:
+            - ./backend/src:/usr/app/src
+        depends_on:
+            - mdb
+
+    mdb:
+        image: mongo
+        ports:
+            - 27017:27017
+        container_name: todo-list-mdb
+        volumes:
+            - mongo-data:/data/db
+
+    db:
+        image: mysql
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_USERNAME: root
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+            MYSQL_DATABASE: todo_list_db
+        container_name: todo-list-db
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+volumes:
+    mongo-data:
+        driver: local
+    mysql-data:
+        driver: local
