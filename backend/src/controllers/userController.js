@@ -1,4 +1,3 @@
-const { Users } = require('../model/data');
 const { User } = require('../database/models');
 
 const bcrypt = require('bcrypt');
@@ -63,6 +62,7 @@ const userController = {
         }
     },
     login: async (req, res) => {
+        console.log('req.body', req.body);
         const { username, password } = req.body;
         if (!username || !password)
             return res
@@ -74,6 +74,7 @@ const userController = {
             raw: true,
             nest: true,
         });
+        console.log('user', user);
         if (!user) {
             res.status(400).json({
                 message: 'El usuario no existe',

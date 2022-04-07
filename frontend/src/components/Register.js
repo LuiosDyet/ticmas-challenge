@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthProvider';
 import './Register.css';
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 const validUserRegex = /^[a-zA-Z0-9]{3,20}$/;
 const validPasswordRegex = /^[a-zA-Z0-9]{6,20}$/;
 

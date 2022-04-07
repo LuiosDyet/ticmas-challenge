@@ -1,7 +1,31 @@
 const request = require('supertest');
 const app = require('../app');
+const { createPool } = require('mysql2/promise');
+const bcrypt = require('bcrypt');
 
 describe('Register User', () => {
+    let connection;
+
+    beforeAll(async () => {
+        let createTable = `CREATE TABLE IF NOT EXISTS users (
+            id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+            username varchar(255) DEFAULT NULL,
+            password varchar(255) DEFAULT NULL,
+            refreshToken varchar(255) DEFAULT NULL,
+            createdAt datetime NOT NULL,
+            updatedAt datetime NOT NULL,
+            PRIMARY KEY (id)
+        )`;
+        connection = await createPool({
+            host: '127.0.0.1',
+            user: 'root',
+            password: null,
+            database: 'test',
+            port: process.env.DB_PORT,
+        });
+        await connection.query(createTable);
+    });
+
     it('should return a status 400 without user name or password', async () => {
         const response = await request(app).post('/user/register').send({
             username: '',
@@ -27,9 +51,48 @@ describe('Register User', () => {
         expect(response.statusCode).toBe(409);
         expect(response.body).toHaveProperty('message');
     });
+    afterAll(async () => {
+        await connection.query('DROP TABLE users');
+        await connection.end();
+    });
 });
 
 describe('Login User', () => {
+    let connection;
+
+    beforeAll(async () => {
+        let createTable = `CREATE TABLE IF NOT EXISTS users (
+            id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+            username varchar(255) DEFAULT NULL,
+            password varchar(255) DEFAULT NULL,
+            refreshToken varchar(255) DEFAULT NULL,
+            createdAt datetime NOT NULL,
+            updatedAt datetime NOT NULL,
+            PRIMARY KEY (id)
+        )`;
+        connection = await createPool({
+            host: '127.0.0.1',
+            user: 'root',
+            password: null,
+            database: 'test',
+            port: process.env.DB_PORT,
+        });
+        await connection.query(createTable);
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync('123456', salt);
+        console.log('hashPassword', hashPassword);
+        const createUser = `insert
+	into
+	\`users\`
+        values ('7971e668-bffb-4c77-9d0e-c26aaae4a0a6',
+        'luios',
+        '$2b$10$8rOwFXm3wCiF9pP0e/NJueVytTeVfEiOOIhUzXIf/yQpCsOe3ueEa',
+        '${hashPassword}',
+        '2022-04-07 10:14:15',
+        '2022-04-07 10:15:05')`;
+        await connection.query(createUser);
+    });
+
     it('should return a status code 400 without user name or password', async () => {
         const response = await request(app).post('/user/login').send({
             username: '',
@@ -62,17 +125,96 @@ describe('Login User', () => {
         expect(response.body).toHaveProperty('accessToken');
         expect(response.body).toHaveProperty('userId');
     });
+
+    afterAll(async () => {
+        await connection.query('DROP TABLE users');
+        await connection.end();
+    });
 });
 
 describe('Logout User', () => {
+    let connection;
+
+    beforeAll(async () => {
+        let createTable = `CREATE TABLE IF NOT EXISTS users (
+            id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+            username varchar(255) DEFAULT NULL,
+            password varchar(255) DEFAULT NULL,
+            refreshToken varchar(255) DEFAULT NULL,
+            createdAt datetime NOT NULL,
+            updatedAt datetime NOT NULL,
+            PRIMARY KEY (id)
+        )`;
+        connection = await createPool({
+            host: '127.0.0.1',
+            user: 'root',
+            password: null,
+            database: 'test',
+            port: process.env.DB_PORT,
+        });
+        await connection.query(createTable);
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync('123456', salt);
+        console.log('hashPassword', hashPassword);
+        const createUser = `insert
+	into
+	\`users\`
+        values ('7971e668-bffb-4c77-9d0e-c26aaae4a0a6',
+        'luios',
+        '$2b$10$8rOwFXm3wCiF9pP0e/NJueVytTeVfEiOOIhUzXIf/yQpCsOe3ueEa',
+        '${hashPassword}',
+        '2022-04-07 10:14:15',
+        '2022-04-07 10:15:05')`;
+        await connection.query(createUser);
+    });
+
     it('should return a status code 200 ', async () => {
         //Test clearing of cookie in frontend
-        const response = await request(app).get('/user/logout');
+        const response = await request(app).get(
+            '/user/logout/7971e668-bffb-4c77-9d0e-c26aaae4a0a6'
+        );
         expect(response.statusCode).toBe(200);
+    });
+    afterAll(async () => {
+        await connection.query('DROP TABLE users');
+        await connection.end();
     });
 });
 
 describe('Refresh Token', () => {
+    beforeAll(async () => {
+        let createTable = `CREATE TABLE IF NOT EXISTS users (
+            id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+            username varchar(255) DEFAULT NULL,
+            password varchar(255) DEFAULT NULL,
+            refreshToken varchar(255) DEFAULT NULL,
+            createdAt datetime NOT NULL,
+            updatedAt datetime NOT NULL,
+            PRIMARY KEY (id)
+        )`;
+        connection = await createPool({
+            host: '127.0.0.1',
+            user: 'root',
+            password: null,
+            database: 'test',
+            port: process.env.DB_PORT,
+        });
+        await connection.query(createTable);
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync('123456', salt);
+        console.log('hashPassword', hashPassword);
+        const createUser = `insert
+	into
+	\`users\`
+        values ('7971e668-bffb-4c77-9d0e-c26aaae4a0a6',
+        'luios',
+        '$2b$10$8rOwFXm3wCiF9pP0e/NJueVytTeVfEiOOIhUzXIf/yQpCsOe3ueEa',
+        '${hashPassword}',
+        '2022-04-07 10:14:15',
+        '2022-04-07 10:15:05')`;
+        await connection.query(createUser);
+    });
+
     it('should return a status code 401 if no cookie is send', async () => {
         const response = await request(app).get('/user/refreshToken');
         expect(response.statusCode).toBe(401);
@@ -93,5 +235,10 @@ describe('Refresh Token', () => {
             .get('/user/refreshToken')
             .set('Cookie', [refreshToken]);
         expect(response2.statusCode).toBe(200);
+    });
+
+    afterAll(async () => {
+        await connection.query('DROP TABLE users');
+        await connection.end();
     });
 });

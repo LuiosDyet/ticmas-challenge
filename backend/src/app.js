@@ -14,7 +14,12 @@ const connectDB = require('./databasemdb/config');
 connectDB();
 
 app.use(credentials);
-app.use(cors({ origin: process.env.CLIENT_ORIGIN, credentials: true }));
+app.use(
+    cors({
+        origin: [process.env.CLIENT_ORIGIN, 'http://localhost:3000'],
+        credentials: true,
+    })
+);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

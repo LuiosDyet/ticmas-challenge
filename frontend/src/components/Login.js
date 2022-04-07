@@ -3,7 +3,7 @@ import axios from 'axios';
 import AuthContext from '../context/AuthProvider';
 import { Link } from 'react-router-dom';
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
 const Login = () => {
     const { setAuth, setUserName } = useContext(AuthContext);
