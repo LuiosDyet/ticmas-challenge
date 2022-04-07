@@ -14,7 +14,6 @@ const todosController = {
             description,
         };
         const todo = await Todo.create(newTodo);
-        console.log('todo', todo._id);
         res.status(201).json({
             message: `Todo ${todo.description.slice(0, 20)}... creado`,
             todo,

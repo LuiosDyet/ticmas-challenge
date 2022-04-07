@@ -80,7 +80,6 @@ describe('Login User', () => {
         await connection.query(createTable);
         const salt = bcrypt.genSaltSync(10);
         const hashPassword = bcrypt.hashSync('123456', salt);
-        console.log('hashPassword', hashPassword);
         const createUser = `insert
 	into
 	\`users\`
@@ -155,7 +154,6 @@ describe('Logout User', () => {
         await connection.query(createTable);
         const salt = bcrypt.genSaltSync(10);
         const hashPassword = bcrypt.hashSync('123456', salt);
-        console.log('hashPassword', hashPassword);
         const createUser = `insert
 	into
 	\`users\`
@@ -202,7 +200,6 @@ describe('Refresh Token', () => {
         await connection.query(createTable);
         const salt = bcrypt.genSaltSync(10);
         const hashPassword = bcrypt.hashSync('123456', salt);
-        console.log('hashPassword', hashPassword);
         const createUser = `insert
 	into
 	\`users\`

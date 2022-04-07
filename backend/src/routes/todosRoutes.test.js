@@ -1,11 +1,50 @@
 const request = require('supertest');
 const app = require('../app');
+const { createPool } = require('mysql2/promise');
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+beforeAll(async () => {
+    let createTable = `CREATE TABLE IF NOT EXISTS users (
+            id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+            username varchar(255) DEFAULT NULL,
+            password varchar(255) DEFAULT NULL,
+            refreshToken varchar(255) DEFAULT NULL,
+            createdAt datetime NOT NULL,
+            updatedAt datetime NOT NULL,
+            PRIMARY KEY (id)
+        )`;
+    connection = await createPool({
+        host: '127.0.0.1',
+        user: 'root',
+        password: null,
+        database: 'test',
+        port: process.env.DB_PORT,
+    });
+    await connection.query(createTable);
+    const salt = bcrypt.genSaltSync(10);
+    const hashPassword = bcrypt.hashSync('123456', salt);
+    const createUser = `insert
+	into
+	\`users\`
+        values ('7971e668-bffb-4c77-9d0e-c26aaae4a0a6',
+        'luios',
+        '$2b$10$8rOwFXm3wCiF9pP0e/NJueVytTeVfEiOOIhUzXIf/yQpCsOe3ueEa',
+        '${hashPassword}',
+        '2022-04-07 10:14:15',
+        '2022-04-07 10:15:05')`;
+    await connection.query(createUser);
+
+    mongoConnection = await mongoose.connect(process.env.MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+    db = mongoose.connection;
+    await db.createCollection('test_todos');
+});
 
 const user = async () => {
-    await request(app).post('/user/register').send({
-        username: 'luios',
-        password: '123456',
-    });
     const response = await request(app).post('/user/login').send({
         username: 'luios',
         password: '123456',
@@ -56,7 +95,7 @@ describe('Update Todo ', () => {
         const { todos } = await todoMock();
         const { accessToken, userId } = await user();
         const response = await request(app)
-            .put(`/todos/update/${todos[0].id}`)
+            .put(`/todos/update/${todos[0]._id}`)
             .set('Authorization', `Bearer ${accessToken}`)
             .send({
                 userId,
@@ -73,7 +112,7 @@ describe('Delete Todo ', () => {
         const { todos } = await todoMock();
         const { accessToken, userId } = await user();
         const response = await request(app)
-            .delete(`/todos/delete/${todos[0].id}`)
+            .delete(`/todos/delete/${todos[0]._id}`)
             .set('Authorization', `Bearer ${accessToken}`);
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty('message');
@@ -83,4 +122,12 @@ describe('Delete Todo ', () => {
             .set('Authorization', `Bearer ${accessToken}`);
         expect(response2.body.todos.length).toBe(0);
     });
+});
+
+afterAll(async () => {
+    await connection.query('DROP TABLE users');
+    await connection.end();
+    const collection = 'test_todos';
+    await db.dropCollection(collection);
+    await db.close();
 });
