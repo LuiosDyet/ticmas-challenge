@@ -16,5 +16,11 @@ module.exports = {
         semi: ['error', 'always'],
         quotes: ['error', 'single'],
         indent: ['error', 4],
+        'comma-dangle': ['off', 'never'],
+        'no-console': 'off',
+        'no-underscore-dangle': 'off',
+        'react/jsx-indent': 'off',
+        'react/jsx-indent-props': 'off',
+        'react/button-has-type': 'off',
     },
 };

@@ -26,3 +26,10 @@ The test consists of the development of a TODOs app.
     completed) of each of them.
 -   &#9745; Have 1 endpoint that generates a JWT for the user
 -   &#9745; Implement REST API endpoints for the
+
+### Bonus points
+
+-   &#9745; Include tests for the application code (backend, frontend, or both).
+-   &#9745; Use an ESLint/TSLint config and a npm command to lint all files.
+-   &#9745; Use a database for persistence.
+-   &#9745; Provide a docker-compose file with containers for frontend, backend and database.

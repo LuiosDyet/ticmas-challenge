@@ -1,7 +1,8 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+// eslint-disable-next-line object-curly-newline
+import { React, useRef, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import {
-    useRef, useState, useEffect, useContext,
-} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthProvider';
 import './Register.css';
@@ -70,7 +71,7 @@ function Register() {
                         'Content-Type': 'application/json',
                         withCredentials: true,
                     },
-                },
+                }
             );
             const accessToken = response?.data?.accessToken;
             const userId = response?.data?.userId;
@@ -97,9 +98,9 @@ function Register() {
                     ref={errorRef}
                     className={errorMessage ? 'errorMessage' : 'hidden'}
                     aria-live="assertive"
-              >
+                >
                     {errorMessage}
-              </p>
+                </p>
                 <h2 className="fs-3 mb-3">Registrate</h2>
                 <form onSubmit={submit}>
                     <div className="form-floating mb-3">
@@ -116,7 +117,7 @@ function Register() {
                             onBlur={() => setUserFocused(false)}
                             aria-invalid={validUser ? 'false' : 'true'}
                             aria-describedby="usernameHints"
-                      />
+                        />
                         <label htmlFor="username">nombre de usuario</label>
                         <p
                             id="usernameHints"
@@ -124,11 +125,11 @@ function Register() {
                             className={
                                 userFocused || !validUser ? 'focused' : 'hidden'
                             }
-                      >
-                          El nombre de usuario debe tener entre 3 y 20
-                          caracteres alfanuméricos.
-                      </p>
-                  </div>
+                        >
+                            El nombre de usuario debe tener entre 3 y 20
+                            caracteres alfanuméricos.
+                        </p>
+                    </div>
                     <div className="form-floating mb-3">
                         <input
                             type="password"
@@ -138,12 +139,13 @@ function Register() {
                             placeholder="contraseña"
                             ref={passwordRef}
                             value={password}
+                            /* prettier-ignore */
                             onChange={() => setPassword(passwordRef.current.value)}
                             onFocus={() => setPasswordFocused(true)}
                             onBlur={() => setPasswordFocused(false)}
                             aria-invalid={validPassword ? 'false' : 'true'}
                             aria-describedby="passwordHints"
-                      />
+                        />
                         <label htmlFor="password">contraseña</label>
                         <p
                             id="passwordHints"
@@ -153,11 +155,11 @@ function Register() {
                                     ? 'focused'
                                     : 'hidden'
                             }
-                      >
-                          La contraseña debe tener entre 6 y 20 caracteres
-                          alfanuméricos.
-                      </p>
-                  </div>
+                        >
+                            La contraseña debe tener entre 6 y 20 caracteres
+                            alfanuméricos.
+                        </p>
+                    </div>
                     <div className="form-floating mb-3">
                         <input
                             type="password"
@@ -167,18 +169,17 @@ function Register() {
                             placeholder="confirmar contraseña"
                             ref={confirmPasswordRef}
                             value={confirmPassword}
-                            onChange={() => setConfirmPassword(
-                                confirmPasswordRef.current.value,
-                            )}
+                            /* prettier-ignore */
+                            onChange={() => setConfirmPassword(confirmPasswordRef.current.value)}
                             onFocus={() => setConfirmPasswordFocused(true)}
                             onBlur={() => setConfirmPasswordFocused(false)}
                             aria-invalid={
                                 validConfirmPassword ? 'false' : 'true'
                             }
                             aria-describedby="confirmPasswordHints"
-                      />
+                        />
                         <label htmlFor="confirmPassword">
-                        confirmar contraseña
+                            confirmar contraseña
                         </label>
                         <p
                             id="confirmPasswordHints"
@@ -188,31 +189,30 @@ function Register() {
                                     ? 'focused'
                                     : 'hidden'
                             }
-                      >
-                          La contraseña debe coincidir con la anterior.
-                      </p>
-                  </div>
+                        >
+                            La contraseña debe coincidir con la anterior.
+                        </p>
+                    </div>
                     <div className="d-flex justify-content-end mb-3">
                         <button
                             className="btn btn-secondary "
                             data-testid="button"
                             disabled={
-                                !validUser
-                                || !validPassword
-                                || !validConfirmPassword
+                                !validUser ||
+                                !validPassword ||
+                                !validConfirmPassword
                             }
-                      >
-                          Registrarse
-                      </button>
-                  </div>
-              </form>
+                        >
+                            Registrarse
+                        </button>
+                    </div>
+                </form>
                 <p>
-                ¿Ya tienes una cuenta? 
-{' '}
+                    ¿Ya tienes una cuenta?
                     <Link to="/">Inicia sesión</Link>
-              </p>
-          </div>
-      </section>
+                </p>
+            </div>
+        </section>
     );
 }
 

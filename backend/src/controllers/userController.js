@@ -2,10 +2,20 @@ const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const { User } = require('../database/models');
+const sanitize = require('../lib/sanitizer');
 
 const userController = {
     register: async (req, res) => {
-        const { username, password } = req.body;
+        let { username } = req.body;
+        const { password } = req.body;
+        const reg = /[&<>"'/]/gi;
+        if (reg.test(username) || reg.test(password)) {
+            return res.status(400).json({
+                message:
+                    'El nombre de usuario o la contraseña no pueden contener caracteres especiales.',
+            });
+        }
+        username = sanitize(username.trim());
         if (!username || !password) {
             return res
                 .status(400)
@@ -24,6 +34,7 @@ const userController = {
         } else {
             const salt = bcrypt.genSaltSync(10);
             const hashPassword = bcrypt.hashSync(password, salt);
+            username = sanitize(username.trim());
             const newUser = {
                 id: uuidv4(),
                 username,
@@ -34,14 +45,14 @@ const userController = {
                 process.env.ACCESS_TOKEN_SECRET,
                 {
                     expiresIn: '6h',
-                },
+                }
             );
             const refreshToken = jwt.sign(
                 { userId: newUser.id },
                 process.env.REFRESH_TOKEN_SECRET,
                 {
                     expiresIn: '7d',
-                },
+                }
             );
 
             newUser.refreshToken = refreshToken;
@@ -62,7 +73,9 @@ const userController = {
         }
     },
     login: async (req, res) => {
-        const { username, password } = req.body;
+        let { username } = req.body;
+        username = sanitize(username.trim());
+        const { password } = req.body;
         if (!username || !password) {
             return res
                 .status(400)
@@ -90,14 +103,14 @@ const userController = {
                     process.env.ACCESS_TOKEN_SECRET,
                     {
                         expiresIn: '6h',
-                    },
+                    }
                 );
                 const refreshToken = jwt.sign(
                     { userId: user.id },
                     process.env.REFRESH_TOKEN_SECRET,
                     {
                         expiresIn: '7d',
-                    },
+                    }
                 );
                 User.update({ refreshToken }, { where: { id: user.id } });
                 res.cookie('refreshToken', refreshToken, {
@@ -119,7 +132,7 @@ const userController = {
         res.clearCookie('refreshToken');
         await User.update(
             { refreshToken: null },
-            { where: { id: req.params.id } },
+            { where: { id: req.params.id } }
         );
 
         res.status(200).json({
@@ -144,13 +157,13 @@ const userController = {
                     process.env.ACCESS_TOKEN_SECRET,
                     {
                         expiresIn: '15s',
-                    },
+                    }
                 );
                 res.status(200).json({
                     message: 'Token renovado',
                     accessToken,
                 });
-            },
+            }
         );
     },
 };

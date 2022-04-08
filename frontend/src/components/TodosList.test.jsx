@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -7,11 +8,11 @@ import { AuthProvider } from '../context/AuthProvider';
 describe('TodosList', () => {
     it('should render', async () => {
         render(
-          <AuthProvider>
-              <MemoryRouter>
-                  <TodosList />
+            <AuthProvider>
+                <MemoryRouter>
+                    <TodosList />
                 </MemoryRouter>
-            </AuthProvider>,
+            </AuthProvider>
         );
         const todoInput = screen.getByTestId('todoInput');
         expect(todoInput).toBeTruthy();

@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-tabs */
 const request = require('supertest');
 const { createPool } = require('mysql2/promise');
 const bcrypt = require('bcrypt');
@@ -169,7 +171,7 @@ describe('Logout User', () => {
     it('should return a status code 200 ', async () => {
         // Test clearing of cookie in frontend
         const response = await request(app).get(
-            '/user/logout/7971e668-bffb-4c77-9d0e-c26aaae4a0a6',
+            '/user/logout/7971e668-bffb-4c77-9d0e-c26aaae4a0a6'
         );
         expect(response.statusCode).toBe(200);
     });

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import { screen, fireEvent, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -6,9 +7,9 @@ import Register from './Register';
 describe('Register', () => {
     it('should render', () => {
         render(
-          <MemoryRouter>
-              <Register />
-            </MemoryRouter>,
+            <MemoryRouter>
+                <Register />
+            </MemoryRouter>
         );
         const username = screen.getByTestId('username');
         expect(username).toBeTruthy();
@@ -19,14 +20,14 @@ describe('Register', () => {
         const button = screen.getByTestId('button');
         expect(button).toBeTruthy();
         expect(screen.getByText(/Registrarse/i).getAttribute('disabled')).toBe(
-            '',
+            ''
         );
     });
     it('should pass with valid data', () => {
         render(
-          <MemoryRouter>
-              <Register />
-            </MemoryRouter>,
+            <MemoryRouter>
+                <Register />
+            </MemoryRouter>
         );
         const username = screen.getByTestId('username');
         const usernameHints = screen.getByTestId('usernameHints');
@@ -59,14 +60,14 @@ describe('Register', () => {
         expect(confirmPasswordHints.classList.contains('hidden')).toBe(true);
 
         expect(screen.getByText(/Registrarse/i).getAttribute('disabled')).toBe(
-            null,
+            null
         );
     });
     it('should not pass with invalid data', () => {
         render(
-          <MemoryRouter>
-              <Register />
-            </MemoryRouter>,
+            <MemoryRouter>
+                <Register />
+            </MemoryRouter>
         );
         const username = screen.getByTestId('username');
         const usernameHints = screen.getByTestId('usernameHints');
@@ -96,7 +97,7 @@ describe('Register', () => {
         expect(confirmPasswordHints.classList.contains('hidden')).toBe(false);
 
         expect(screen.getByText(/Registrarse/i).getAttribute('disabled')).toBe(
-            '',
+            ''
         );
     });
 });

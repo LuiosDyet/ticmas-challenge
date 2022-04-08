@@ -1,9 +1,18 @@
-const { v4: uuidv4 } = require('uuid');
 const Todo = require('../databasemdb/models/todos');
+// const sanitize = require('../lib/sanitizer');
 
 const todosController = {
     create: async (req, res) => {
-        const { description, userId } = req.body;
+        const { userId } = req.body;
+        const { description } = req.body;
+        // const reg = /[&<>"'/]/gi;
+        // if (reg.test(description)) {
+        //     return res.status(400).json({
+        //         message: 'La tarea no puede contener caracteres especiales.',
+        //     });
+        // }
+        // description = sanitize(description.trim());
+
         if (!description) {
             return res
                 .status(400)

@@ -4,7 +4,6 @@ const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const credentials = require('./middleware/credentials');
 const JWT = require('./middleware/JWT');
 
@@ -19,10 +18,11 @@ app.use(
     cors({
         origin: [process.env.CLIENT_ORIGIN, 'http://localhost:3000'],
         credentials: true,
-    }),
+    })
 );
 
 app.use(express.urlencoded({ extended: false }));
+
 app.use(express.json());
 app.use(cookieParser());
 

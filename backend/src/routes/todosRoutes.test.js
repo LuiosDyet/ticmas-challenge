@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-tabs */
 const request = require('supertest');
 const { createPool } = require('mysql2/promise');
 const bcrypt = require('bcrypt');
