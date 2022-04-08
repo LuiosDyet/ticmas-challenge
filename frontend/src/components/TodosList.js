@@ -2,13 +2,14 @@ import axios from 'axios';
 import './TodosList.css';
 import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useRef, useState } from 'react';
-import AuthContext from '../context/AuthProvider';
+import {
+    useContext, useEffect, useRef, useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../context/AuthProvider';
 
 function TodosList() {
-    const baseUrl =
-        process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+    const baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
     const { auth, setAuth, userName } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -30,20 +31,20 @@ function TodosList() {
     useEffect(() => {
         if (refresh.done) {
             switch (refresh.method) {
-                case 'addTodo':
-                    addTodo();
-                    break;
-                case 'readTodo':
-                    readTodos();
-                    break;
-                case 'updateTodo':
-                    updateTodo(refresh.todoId);
-                    break;
-                case 'removeTodo':
-                    removeTodo(refresh.todoId);
-                    break;
-                default:
-                    break;
+            case 'addTodo':
+                addTodo();
+                break;
+            case 'readTodo':
+                readTodos();
+                break;
+            case 'updateTodo':
+                updateTodo(refresh.todoId);
+                break;
+            case 'removeTodo':
+                removeTodo(refresh.todoId);
+                break;
+            default:
+                break;
             }
             setRefresh({ done: false, method: '', todoId: '' });
         } // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,7 +87,7 @@ function TodosList() {
                             'Content-Type': 'application/json',
                             authorization: `Bearer ${auth?.accessToken}`,
                         },
-                    }
+                    },
                 );
                 readTodos();
                 setTodo('');
@@ -110,7 +111,7 @@ function TodosList() {
                     headers: {
                         authorization: `Bearer ${auth?.accessToken}`,
                     },
-                }
+                },
             );
             setTodos(response.data.todos);
             todoRef.current.focus();
@@ -135,7 +136,7 @@ function TodosList() {
                         'Content-Type': 'application/json',
                         authorization: `Bearer ${auth?.accessToken}`,
                     },
-                }
+                },
             );
             readTodos();
         } catch (error) {
@@ -180,69 +181,71 @@ function TodosList() {
     };
 
     return (
-        <section className="px-5">
-            <div className="box">
-                <div className="d-flex justify-content-end mb-3">
-                    <button
-                        className="btn btn-secondary "
-                        onClick={() => logout()}
+      <section className="px-5">
+          <div className="box">
+              <div className="d-flex justify-content-end mb-3">
+                  <button
+                      className="btn btn-secondary "
+                      onClick={() => logout()}
                     >
-                        Salir
+                      Salir
                     </button>
                 </div>
-                <h2 className="fs-3 mb-3">Lista de tareas de {userName}</h2>
-                <ul data-testid="todoList">
-                    {todos.map((todo) => (
-                        <li
-                            className="mb-3 d-flex justify-content-end"
-                            key={todo._id}
+              <h2 className="fs-3 mb-3">
+                  Lista de tareas de{userName}
+                </h2>
+              <ul data-testid="todoList">
+                  {todos.map((todo) => (
+                      <li
+                          className="mb-3 d-flex justify-content-end"
+                          key={todo._id}
                         >
-                            <span className="flex-grow-1">
-                                <span
-                                    className={
+                          <span className="flex-grow-1">
+                              <span
+                                  className={
                                         todo.completed ? 'crossed' : null
                                     }
                                 >
-                                    {todo.description}
+                                  {todo.description}
                                 </span>
                             </span>
-                            {!todo.completed ? (
-                                <button
-                                    onClick={() => updateTodo(todo._id)}
-                                    className="btn btn-sm"
-                                    style={{
+                          {!todo.completed ? (
+                              <button
+                                  onClick={() => updateTodo(todo._id)}
+                                  className="btn btn-sm"
+                                  style={{
                                         color: 'green',
                                     }}
                                 >
-                                    <FontAwesomeIcon icon={faCheck} />
+                                  <FontAwesomeIcon icon={faCheck} />
                                 </button>
                             ) : (
-                                <button
-                                    onClick={() => removeTodo(todo._id)}
-                                    className="btn  btn-sm"
+                              <button
+                                  onClick={() => removeTodo(todo._id)}
+                                  className="btn  btn-sm"
                                 >
-                                    <FontAwesomeIcon
-                                        icon={faTrash}
-                                        style={{ color: 'darkred' }}
+                                  <FontAwesomeIcon
+                                      icon={faTrash}
+                                      style={{ color: 'darkred' }}
                                     />
                                 </button>
                             )}
                         </li>
                     ))}
                 </ul>
-                <input
-                    type="text"
-                    className="form-control mb-3"
-                    data-testid="todoInput"
-                    placeholder="Agregar tarea"
-                    ref={todoRef}
-                    value={todo}
-                    onChange={(e) => setTodo(e.target.value)}
-                    onKeyDown={(e) => {
+              <input
+                  type="text"
+                  className="form-control mb-3"
+                  data-testid="todoInput"
+                  placeholder="Agregar tarea"
+                  ref={todoRef}
+                  value={todo}
+                  onChange={(e) => setTodo(e.target.value)}
+                  onKeyDown={(e) => {
                         addTodo(e);
                     }}
                 />
-                {/* <button className="btn btn-secondary" onClick={() => addTodo()}>
+              {/* <button className="btn btn-secondary" onClick={() => addTodo()}>
                         Agregar
                     </button> */}
             </div>

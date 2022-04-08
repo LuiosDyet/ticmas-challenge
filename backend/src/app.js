@@ -1,11 +1,12 @@
 const express = require('express');
+
 const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const credentials = require('./middleware/credentials');
 const JWT = require('./middleware/JWT');
-const mongoose = require('mongoose');
 
 require('dotenv').config();
 
@@ -18,7 +19,7 @@ app.use(
     cors({
         origin: [process.env.CLIENT_ORIGIN, 'http://localhost:3000'],
         credentials: true,
-    })
+    }),
 );
 
 app.use(express.urlencoded({ extended: false }));

@@ -4,9 +4,9 @@ import Register from './Register';
 
 function UserRegLogin(props) {
     return (
-        <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+      <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
     );
 }

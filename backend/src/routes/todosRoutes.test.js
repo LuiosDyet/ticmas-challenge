@@ -1,12 +1,12 @@
 const request = require('supertest');
-const app = require('../app');
 const { createPool } = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const app = require('../app');
 require('dotenv').config();
 
 beforeAll(async () => {
-    let createTable = `CREATE TABLE IF NOT EXISTS users (
+    const createTable = `CREATE TABLE IF NOT EXISTS users (
             id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
             username varchar(255) DEFAULT NULL,
             password varchar(255) DEFAULT NULL,
@@ -116,7 +116,7 @@ describe('Delete Todo ', () => {
             .set('Authorization', `Bearer ${accessToken}`);
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty('message');
-        //Check Database if todo is deleted
+        // Check Database if todo is deleted
         const response2 = await request(app)
             .get(`/todos/read/${userId}`)
             .set('Authorization', `Bearer ${accessToken}`);

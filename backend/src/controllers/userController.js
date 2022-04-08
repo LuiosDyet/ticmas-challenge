@@ -1,16 +1,16 @@
-const { User } = require('../database/models');
-
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
+const { User } = require('../database/models');
 
 const userController = {
     register: async (req, res) => {
         const { username, password } = req.body;
-        if (!username || !password)
+        if (!username || !password) {
             return res
                 .status(400)
                 .json({ message: 'Es necesario un usuario y contraseña' });
+        }
 
         const user = await User.findOne({
             where: { username },
@@ -34,14 +34,14 @@ const userController = {
                 process.env.ACCESS_TOKEN_SECRET,
                 {
                     expiresIn: '6h',
-                }
+                },
             );
             const refreshToken = jwt.sign(
                 { userId: newUser.id },
                 process.env.REFRESH_TOKEN_SECRET,
                 {
                     expiresIn: '7d',
-                }
+                },
             );
 
             newUser.refreshToken = refreshToken;
@@ -63,10 +63,11 @@ const userController = {
     },
     login: async (req, res) => {
         const { username, password } = req.body;
-        if (!username || !password)
+        if (!username || !password) {
             return res
                 .status(400)
                 .json({ message: 'Es necesario un usuario y contraseña' });
+        }
 
         const user = await User.findOne({
             where: { username },
@@ -89,14 +90,14 @@ const userController = {
                     process.env.ACCESS_TOKEN_SECRET,
                     {
                         expiresIn: '6h',
-                    }
+                    },
                 );
                 const refreshToken = jwt.sign(
                     { userId: user.id },
                     process.env.REFRESH_TOKEN_SECRET,
                     {
                         expiresIn: '7d',
-                    }
+                    },
                 );
                 User.update({ refreshToken }, { where: { id: user.id } });
                 res.cookie('refreshToken', refreshToken, {
@@ -118,7 +119,7 @@ const userController = {
         res.clearCookie('refreshToken');
         await User.update(
             { refreshToken: null },
-            { where: { id: req.params.id } }
+            { where: { id: req.params.id } },
         );
 
         res.status(200).json({
@@ -126,8 +127,8 @@ const userController = {
         });
     },
     refreshToken: (req, res) => {
-        const cookies = req.cookies;
-        const refreshToken = cookies.refreshToken;
+        const { cookies } = req;
+        const { refreshToken } = cookies;
         if (!refreshToken) {
             return res.sendStatus(401);
         }
@@ -143,13 +144,13 @@ const userController = {
                     process.env.ACCESS_TOKEN_SECRET,
                     {
                         expiresIn: '15s',
-                    }
+                    },
                 );
                 res.status(200).json({
                     message: 'Token renovado',
                     accessToken,
                 });
-            }
+            },
         );
     },
 };

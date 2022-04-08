@@ -1,13 +1,14 @@
-const Todo = require('../databasemdb/models/todos');
 const { v4: uuidv4 } = require('uuid');
+const Todo = require('../databasemdb/models/todos');
 
 const todosController = {
     create: async (req, res) => {
         const { description, userId } = req.body;
-        if (!description)
+        if (!description) {
             return res
                 .status(400)
                 .json({ message: 'Es necesario  una descripción' });
+        }
 
         const newTodo = {
             userId,

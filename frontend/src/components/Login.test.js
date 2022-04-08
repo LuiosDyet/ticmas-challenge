@@ -1,14 +1,14 @@
 import React from 'react';
 import { screen, fireEvent, render } from '@testing-library/react';
-import Login from './Login';
 import { MemoryRouter } from 'react-router-dom';
+import Login from './Login';
 
 describe('Login', () => {
     it('should render', () => {
         render(
-            <MemoryRouter>
-                <Login />
-            </MemoryRouter>
+          <MemoryRouter>
+              <Login />
+            </MemoryRouter>,
         );
         const username = screen.getByTestId('username');
         expect(username).toBeTruthy();
@@ -17,14 +17,14 @@ describe('Login', () => {
         const button = screen.getByTestId('button');
         expect(button).toBeTruthy();
         expect(
-            screen.getByText(/Iniciar sesión/i).getAttribute('disabled')
+            screen.getByText(/Iniciar sesión/i).getAttribute('disabled'),
         ).toBe('');
     });
     it('should pass with valid data', () => {
         render(
-            <MemoryRouter>
-                <Login />
-            </MemoryRouter>
+          <MemoryRouter>
+              <Login />
+            </MemoryRouter>,
         );
         const username = screen.getByTestId('username');
         fireEvent.change(username, {
@@ -38,7 +38,7 @@ describe('Login', () => {
         });
         expect(password.value).toBe('123456');
         expect(
-            screen.getByText(/Iniciar sesión/i).getAttribute('disabled')
+            screen.getByText(/Iniciar sesión/i).getAttribute('disabled'),
         ).toBe(null);
     });
 });

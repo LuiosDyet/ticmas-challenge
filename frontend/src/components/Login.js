@@ -1,11 +1,13 @@
-import { useRef, useEffect, useState, useContext } from 'react';
+import {
+    useRef, useEffect, useState, useContext,
+} from 'react';
 import axios from 'axios';
-import AuthContext from '../context/AuthProvider';
 import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthProvider';
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
-const Login = () => {
+function Login() {
     const { setAuth, setUserName } = useContext(AuthContext);
 
     const userRef = useRef();
@@ -38,7 +40,7 @@ const Login = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                }
+                },
             );
             const accessToken = response?.data?.accessToken;
             const userId = response?.data?.userId;
@@ -58,9 +60,9 @@ const Login = () => {
                     ref={errorRef}
                     className={errorMessage ? 'errorMessage' : 'hidden'}
                     aria-live="assertive"
-                >
+              >
                     {errorMessage}
-                </p>
+              </p>
                 <h2 className="fs-3 mb-3">Ingresá</h2>
                 <form onSubmit={submit}>
                     <div className="form-floating mb-3">
@@ -73,9 +75,9 @@ const Login = () => {
                             ref={userRef}
                             value={user}
                             onChange={() => setUser(userRef.current.value)}
-                        />
+                      />
                         <label htmlFor="username">nombre de usuario</label>
-                    </div>
+                  </div>
                     <div className="form-floating mb-3">
                         <input
                             type="password"
@@ -85,28 +87,28 @@ const Login = () => {
                             placeholder="Contraseña"
                             ref={passwordRef}
                             value={password}
-                            onChange={() =>
-                                setPassword(passwordRef.current.value)
-                            }
-                        />
+                            onChange={() => setPassword(passwordRef.current.value)}
+                      />
                         <label htmlFor="password">contraseña</label>
-                    </div>
+                  </div>
                     <div className="d-flex justify-content-end mb-3">
                         <button
                             className="btn btn-secondary "
                             data-testid="button"
                             disabled={!user || !password}
-                        >
-                            Iniciar sesión
-                        </button>
-                    </div>
+                      >
+                          Iniciar sesión
+                      </button>
+                  </div>
                     <p>
-                        ¿No tenés cuenta? <Link to="/register">Registrate</Link>
-                    </p>
-                </form>
-            </div>
-        </section>
+                    ¿No tenés cuenta? 
+{' '}
+                        <Link to="/register">Registrate</Link>
+                  </p>
+              </form>
+          </div>
+      </section>
     );
-};
+}
 
 export default Login;

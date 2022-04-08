@@ -1,13 +1,13 @@
 const request = require('supertest');
-const app = require('../app');
 const { createPool } = require('mysql2/promise');
 const bcrypt = require('bcrypt');
+const app = require('../app');
 
 describe('Register User', () => {
     let connection;
 
     beforeAll(async () => {
-        let createTable = `CREATE TABLE IF NOT EXISTS users (
+        const createTable = `CREATE TABLE IF NOT EXISTS users (
             id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
             username varchar(255) DEFAULT NULL,
             password varchar(255) DEFAULT NULL,
@@ -61,7 +61,7 @@ describe('Login User', () => {
     let connection;
 
     beforeAll(async () => {
-        let createTable = `CREATE TABLE IF NOT EXISTS users (
+        const createTable = `CREATE TABLE IF NOT EXISTS users (
             id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
             username varchar(255) DEFAULT NULL,
             password varchar(255) DEFAULT NULL,
@@ -135,7 +135,7 @@ describe('Logout User', () => {
     let connection;
 
     beforeAll(async () => {
-        let createTable = `CREATE TABLE IF NOT EXISTS users (
+        const createTable = `CREATE TABLE IF NOT EXISTS users (
             id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
             username varchar(255) DEFAULT NULL,
             password varchar(255) DEFAULT NULL,
@@ -167,9 +167,9 @@ describe('Logout User', () => {
     });
 
     it('should return a status code 200 ', async () => {
-        //Test clearing of cookie in frontend
+        // Test clearing of cookie in frontend
         const response = await request(app).get(
-            '/user/logout/7971e668-bffb-4c77-9d0e-c26aaae4a0a6'
+            '/user/logout/7971e668-bffb-4c77-9d0e-c26aaae4a0a6',
         );
         expect(response.statusCode).toBe(200);
     });
@@ -181,7 +181,7 @@ describe('Logout User', () => {
 
 describe('Refresh Token', () => {
     beforeAll(async () => {
-        let createTable = `CREATE TABLE IF NOT EXISTS users (
+        const createTable = `CREATE TABLE IF NOT EXISTS users (
             id char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
             username varchar(255) DEFAULT NULL,
             password varchar(255) DEFAULT NULL,
