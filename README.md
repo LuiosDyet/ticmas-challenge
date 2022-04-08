@@ -1,6 +1,45 @@
 # Vi-Datec Full-Stack Challenge
 
-Este es un challenge que consiste en
+## Backend
+
+-   port: 8080
+-   mysql port: 3306
+-   mongoDB port: 27017
+
+### commands
+
+    cd backend
+    run: npm run dev
+    test 1: npm test -- userRoutes.test.js
+    test 2: npm test -- todosRoutes.test.js
+    lint: npm run lint
+    lint-fix: npm run lint:fix
+
+## Frontend
+
+-   port: 3000
+
+### commands
+
+    cd frontend
+    run: npm start
+    test: npm test
+    lint: npm run lint
+    lint-fix: npm run lint:fix
+
+### Docker
+
+-   frontend port: 8888
+-   backend port: 6868
+-   mysql port: 3307
+-   mongoDB port: 27017
+
+### commands
+
+    build: docker-compose build
+    run: docker-compose up
+
+## Challenge
 
 The test consists of the development of a TODOs app.
 
